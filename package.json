@@ -8,8 +8,11 @@
 		"start": "next start"
 	},
 	"dependencies": {
+		"@neondatabase/serverless": "^0.10.4",
 		"@tailwindcss/postcss": "^4.0.3",
 		"clsx": "^2.1.1",
+		"dotenv": "^16.4.7",
+		"drizzle-orm": "^0.39.3",
 		"next": "15.1.6",
 		"postcss": "^8.5.1",
 		"react": "^19.0.0",
@@ -23,6 +26,8 @@
 		"@types/node": "^20",
 		"@types/react": "^19",
 		"@types/react-dom": "^19",
+		"drizzle-kit": "^0.30.4",
+		"tsx": "^4.19.3",
 		"typescript": "^5"
 	}
 }
