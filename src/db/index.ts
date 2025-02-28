@@ -1,28 +1,18 @@
-import { env } from "../../env";
-import { drizzle } from "drizzle-orm/neon-http";
-import { eq } from "drizzle-orm";
-import { usersTable } from "./schema";
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
+import * as schema from "@/db/schema";
+import env from "@/env";
 
-const db = drizzle(env.DATABASE_URL);
+export const connection = postgres(env.DATABASE_URL, {
+	max: env.DB_MIGRATING || env.DB_SEEDING ? 1 : undefined,
+	onnotice: env.DB_SEEDING ? () => {} : undefined,
+});
 
-async function main() {
-	const user: typeof usersTable.$inferInsert = {
-		name: "John",
-		age: 30,
-		email: "john@example.com",
-	};
+export const db = drizzle(connection, {
+	schema,
+	logger: true,
+});
 
-	await db.insert(usersTable).values(user);
-	console.log("New user created!");
+export type db = typeof db;
 
-	const users = await db.select().from(usersTable);
-	console.log("Getting all users from the database:", users);
-
-	await db.update(usersTable).set({ age: 31 }).where(eq(usersTable.email, user.email));
-	console.log("User info updated!");
-
-	await db.delete(usersTable).where(eq(usersTable.email, user.email));
-	console.log("User deleted!");
-}
-
-main();
+export default db;
